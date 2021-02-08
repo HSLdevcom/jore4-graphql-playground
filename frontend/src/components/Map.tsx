@@ -1,6 +1,7 @@
 import React from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import CircleLayer from "./CircleLayer";
 
 interface MapProps {
   centerCoordinates?: string;
@@ -17,6 +18,7 @@ const Map: React.FC<MapProps> = (props) => {
         attribution='&copy; <a href="//www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
         url="https://cdn.digitransit.fi/map/v1/hsl-map/{z}/{x}/{y}{r}.png"
       />
+      <CircleLayer />
     </MapContainer>
   );
 };
