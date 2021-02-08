@@ -1,12 +1,45 @@
 import React from "react";
 
-import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
+import {
+  ApolloClient,
+  ApolloProvider,
+  HttpLink,
+  InMemoryCache,
+  split,
+} from "@apollo/client";
+import { getMainDefinition } from "@apollo/client/utilities";
+import { WebSocketLink } from "@apollo/client/link/ws";
 
 import Map from "./components/Map";
 
-const client = new ApolloClient({
+const httpLink = new HttpLink({
   uri: "http://localhost:8080/v1/graphql",
-  cache: new InMemoryCache(),
+});
+
+const wsLink = new WebSocketLink({
+  uri: "ws://localhost:8080/v1/graphql",
+  options: {
+    reconnect: true,
+  },
+});
+
+const link = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    const isSubscription =
+      definition.kind === "OperationDefinition" &&
+      definition.operation === "subscription";
+    return isSubscription;
+  },
+  wsLink,
+  httpLink
+);
+
+const cache = new InMemoryCache();
+
+const client = new ApolloClient({
+  link,
+  cache,
 });
 
 const App: React.FC = () => (
