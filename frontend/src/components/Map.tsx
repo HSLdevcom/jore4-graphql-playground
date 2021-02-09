@@ -2,6 +2,7 @@ import React from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import CircleLayer from "./CircleLayer";
+import EditLayer from "./EditLayer";
 
 interface MapProps {
   centerCoordinates?: string;
@@ -19,6 +20,7 @@ const Map: React.FC<MapProps> = (props) => {
         url="https://cdn.digitransit.fi/map/v1/hsl-map/{z}/{x}/{y}{r}.png"
       />
       <CircleLayer />
+      <EditLayer />
     </MapContainer>
   );
 };
