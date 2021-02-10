@@ -1,0 +1,29 @@
+- table:
+    schema: playground
+    name: points
+  insert_permissions:
+  - role: anonymous
+    permission:
+      check: {}
+      columns:
+      - point_geog
+      backend_only: false
+  select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+      - point_geog
+      - point_id
+      filter: {}
+      allow_aggregations: true
+  update_permissions:
+  - role: anonymous
+    permission:
+      columns:
+      - point_geog
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: anonymous
+    permission:
+      filter: {}
