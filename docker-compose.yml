@@ -20,3 +20,6 @@ services:
       HASURA_GRAPHQL_ENABLE_CONSOLE: "false"
       HASURA_GRAPHQL_ENABLE_TELEMETRY: "false"
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: "anonymous"
+    volumes:
+      - "./hasura/migrations:/hasura-migrations"
+      - "./hasura/metadata:/hasura-metadata"
