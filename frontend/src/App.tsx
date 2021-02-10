@@ -55,7 +55,7 @@ const App: React.FC = () => (
       </header>
       <Map />
       <footer>
-        <p>Footer</p>
+        <p>Click on the map to insert a new point into the database.</p>
       </footer>
     </div>
   </ApolloProvider>
