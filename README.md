@@ -44,3 +44,5 @@ To contribute, in 10 minutes:
 1. Run `hasura console` to start the console.
 1. Run `hasura migrate ...` to read or write DB migration files.
 1. Run `hasura metadata ...` to read or write Hasura configuration.
+
+To iterate on the frontend faster, comment out the lines for the service `frontend` in `docker-compose.yml` and use `yarn start` outside of Docker in the directory `frontend`.
