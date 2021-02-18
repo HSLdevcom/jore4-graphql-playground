@@ -1,5 +1,3 @@
-import React from "react";
-
 import {
   ApolloClient,
   ApolloProvider,
@@ -7,9 +5,9 @@ import {
   InMemoryCache,
   split,
 } from "@apollo/client";
-import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "@apollo/client/link/ws";
-
+import { getMainDefinition } from "@apollo/client/utilities";
+import React from "react";
 import Map from "./components/Map";
 
 const httpLink = new HttpLink({
@@ -35,7 +33,17 @@ const link = split(
   httpLink
 );
 
-const cache = new InMemoryCache();
+const cache = new InMemoryCache({
+  typePolicies: {
+    Subscription: {
+      fields: {
+        playground_points: {
+          merge: false,
+        },
+      },
+    },
+  },
+});
 
 const client = new ApolloClient({
   link,
