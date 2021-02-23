@@ -44,7 +44,7 @@ export const DraggableMarker = ({ position, onUpdate, onDelete }: Props) => {
       <Popup minWidth={90}>
         <button onClick={toggleDraggable}>
           {draggable
-            ? "Marker is draggable"
+            ? "Click here to make marker static"
             : "Click here to make marker draggable"}
         </button>
         <button onClick={onDelete}>Delete</button>
