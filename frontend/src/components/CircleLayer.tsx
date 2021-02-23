@@ -11,7 +11,6 @@ const SUBSCRIBE_ALL_POINTS = gql`
   }
 `;
 
-// FIXME: cache has to be updated after point is deleted? (now we get warning on console)
 const DELETE_POINT = gql`
   mutation DeletePoint($point_id: uuid!) {
     delete_playground_points_by_pk(point_id: $point_id) {
