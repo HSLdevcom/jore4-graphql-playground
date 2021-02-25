@@ -31,7 +31,8 @@
     "eject": "react-scripts eject",
     "prettier": "prettier --write .",
     "relay": "relay-compiler",
-    "prettier-check": "prettier --check ."
+    "prettier:check": "prettier --check .",
+    "ts:check": "yarn tsc --noEmit"
   },
   "eslintConfig": {
     "extends": [
