@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - ci-test
+  pull_request:
+
+jobs:
+  frontend-qa:
+    name: Run QA related things for frontend
+    runs-on: [ubuntu-latest]
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies && check that lockfile is up-to-date
+        run: yarn --frozen-lockfile
+
+      - name: Check ts syntax
+        run: yarn ts:check
+
+      - name: Check that code styles matches prettier's settings
+        run: yarn prettier:check
+
+      - name: build relay's graphql files (required for tests to pass)
+        run: yarn relay
+
+      - name: Run tests
+        run: yarn test
