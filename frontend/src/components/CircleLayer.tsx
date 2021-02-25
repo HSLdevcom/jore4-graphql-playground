@@ -1,32 +1,25 @@
-import { gql, useMutation, useSubscription } from "@apollo/client";
-import React from "react";
+import graphql from "babel-plugin-relay/macro"; // https://create-react-app.dev/docs/adding-relay/
+import React, { useMemo, useState } from "react";
+import { useRelayEnvironment, useSubscription } from "relay-hooks";
+import { GeoJson } from "../types";
 import { DraggableMarker } from "./DraggableMarker";
+import { deletePoint } from "./mutations/DeletePoint";
+import { updatePoint } from "./mutations/UpdatePoint";
 
-const SUBSCRIBE_ALL_POINTS = gql`
-  subscription SubscribeAllPoints {
-    playground_points {
-      point_geog
-      point_id
-    }
-  }
-`;
-
-const DELETE_POINT = gql`
-  mutation DeletePoint($point_id: uuid!) {
-    delete_playground_points_by_pk(point_id: $point_id) {
-      point_id
-    }
-  }
-`;
-
-const UPDATE_POINT = gql`
-  mutation UpdatePoint($point_id: uuid!, $geojson: geography!) {
-    update_playground_points_by_pk(
-      pk_columns: { point_id: $point_id }
-      _set: { point_geog: $geojson }
-    ) {
-      point_id
-      point_geog
+const SUBSCRIBE_ALL_POINTS = graphql`
+  subscription CircleLayerAllPointsSubscription {
+    playground_points_connection(first: 20) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        cursor
+        node {
+          point_geog
+          point_id
+        }
+      }
     }
   }
 `;
@@ -35,32 +28,47 @@ const CircleLayer: React.FC = () => {
   // FIXME: Subscribe only to the intersection of viewport and points
   //const map = useMap();
   //console.log("map bounds:", map.getBounds());
+  const environment = useRelayEnvironment();
+  const [points, setPoints] = useState([]);
 
-  const { loading, error, data } = useSubscription(SUBSCRIBE_ALL_POINTS);
-  const [updatePoint] = useMutation(UPDATE_POINT);
-  const [deletePoint] = useMutation(DELETE_POINT);
-  const updatePointById = (point_id: string, geojson: any) => {
-    updatePoint({ variables: { point_id, geojson } });
+  // FIXME: how subscriptions should work with relay..? This is kind of stupid. Should we e.g. just initialize this subscription somewhere and then query the results here?
+  // FIXME: sepatate subscription from UI component
+  const config = useMemo(
+    () => ({
+      variables: {},
+      subscription: SUBSCRIBE_ALL_POINTS,
+      onNext: (data: any) => {
+        const playground_points = data.playground_points_connection.edges.map(
+          (item: any) => item.node
+        );
+        setPoints(playground_points);
+      },
+      onCompleted: () => {
+        // server closed subscription
+      },
+    }),
+    []
+  );
+  useSubscription(config);
+
+  const updatePointById = (point_id: string, geojson: GeoJson) => {
+    updatePoint(environment, { point_id, geojson });
   };
   const deletePointById = (point_id: string) => {
-    deletePoint({ variables: { point_id } });
+    deletePoint(environment, point_id);
   };
 
-  // FIXME: add spinner?
-  if (loading) return null;
-  // FIXME: show in footer?
-  if (error) return null;
-
-  // FIXME: remove any type
-  return data.playground_points.map(
-    ({ point_id, point_geog: { coordinates } }: any) => (
-      <DraggableMarker
-        key={point_id}
-        position={coordinates}
-        onUpdate={(geojson) => updatePointById(point_id, geojson)}
-        onDelete={() => deletePointById(point_id)}
-      />
-    )
+  return (
+    <>
+      {points.map(({ point_id, point_geog: { coordinates } }: any) => (
+        <DraggableMarker
+          key={point_id}
+          position={coordinates}
+          onUpdate={(geojson) => updatePointById(point_id, geojson)}
+          onDelete={() => deletePointById(point_id)}
+        />
+      ))}
+    </>
   );
 };
 
