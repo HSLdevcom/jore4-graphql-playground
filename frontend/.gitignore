@@ -26,3 +26,6 @@ yarn-error.log*
 
 # relay's generated files
 **/__generated__/**
+
+# generated graphql schema
+schema.graphql
