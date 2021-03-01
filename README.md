@@ -53,6 +53,6 @@ To iterate on the frontend faster, comment out the lines for the service `fronte
 ### Frontend development
 
 To update generate updated graphql schema for relay:
-`/node_modules/graphqurl/bin/run http://localhost:8080/v1beta1/relay --introspect > schema.graphql` (needs to be updated every time our api's schema changes)
+`yarn schema:update` (needs to be updated every time our api's schema changes)
 To keep relay running for watching graphql query changes:
 `yarn relay --watch`
