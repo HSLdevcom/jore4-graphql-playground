@@ -26,15 +26,17 @@
   },
   "scripts": {
     "start": "yarn prebuild && react-scripts start",
+    "prebuild": "yarn relay",
     "build": "yarn prebuild && react-scripts build",
-    "build:schema": "sh scripts/generate-graphql-schema.sh",
-    "prebuild": "yarn build:schema && yarn relay",
-    "test": "react-scripts test",
+    "test": "yarn prebuild && react-scripts test",
+    "lint": "eslint --max-warnings=0",
+    "lint:all": "yarn lint './src/**/*.{ts,tsx}'",
     "eject": "react-scripts eject",
     "prettier": "prettier --write .",
-    "relay": "relay-compiler",
     "prettier:check": "prettier --check .",
-    "ts:check": "yarn tsc --noEmit"
+    "relay": "relay-compiler",
+    "schema:update": "sh scripts/import-graphql-schema.sh",
+    "ts:check": "yarn prebuild && yarn tsc --noEmit"
   },
   "eslintConfig": {
     "extends": [
