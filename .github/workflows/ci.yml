@@ -7,6 +7,29 @@ on:
   pull_request:
 
 jobs:
+  check-graphql-schema:
+    name: Check that frontend is built against our latest graphql schema
+    runs-on: [ubuntu-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Start hasura
+        working-directory: ./
+        run: docker-compose up -d hasura
+
+      - name: Wait for hasura instance to get up
+        run: while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:8080/healthz)" != "200" ]]; do echo "Waiting for hasura instance..."; sleep 5; done
+
+      - name: Fetch latest graphql schema
+        working-directory: ./frontend
+        run: npx graphqurl "http://localhost:8080/v1beta1/relay" --introspect > latest-schema.graphql
+
+      - name: Check that we have latest version of Hasura's schema
+        working-directory: ./frontend
+        run: cmp schema.graphql latest-schema.graphql
+
   frontend-qa:
     name: Run QA related things for frontend
     runs-on: [ubuntu-latest]
@@ -27,8 +50,8 @@ jobs:
       - name: Check that code styles matches prettier's settings
         run: yarn prettier:check
 
-      - name: build relay's graphql files (required for tests to pass)
-        run: yarn relay
+      - name: Check that code styles matches linter's config
+        run: yarn lint:all
 
       - name: Run tests
-        run: yarn test
+        run: yarn test --ci
