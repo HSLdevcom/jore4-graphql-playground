@@ -4,6 +4,8 @@ services:
   postgis:
     image: "postgis/postgis:12-3.1-alpine"
     restart: "unless-stopped"
+    networks:
+      - jore
     environment:
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-postgres}"
     healthcheck:
@@ -19,6 +21,8 @@ services:
       postgis:
         condition: "service_healthy"
     restart: "unless-stopped"
+    networks:
+      - jore
     ports:
       - "8080:8080"
     environment:
@@ -38,6 +42,8 @@ services:
       retries: 3
 
   frontend:
+    networks:
+      - jore
     build:
       context: "./frontend"
       dockerfile: "Dockerfile"
@@ -47,3 +53,7 @@ services:
     restart: "unless-stopped"
     ports:
       - "3000:3000"
+
+networks:
+  jore:
+    name: jore_network
