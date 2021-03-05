@@ -1,0 +1,44 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - cd-test
+  # pull_request:
+  # workflow_dispatch:
+
+jobs:
+  push_to_registry:
+    name: Build & Push docker image to dockerhub
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Pull previous image to support caching
+        run: docker pull hsldevcom/jore4-frontend:builder
+
+      - name: build dependencies & source code into builder image to support caching
+        run: docker build --cache-from=hsldevcom/jore4-frontend:builder --target build -t hsldevcom/jore4-frontend:builder ./frontend
+
+      - name: build frontend's docker image for distribution
+        run: docker build --cache-from=hsldevcom/jore4-frontend:builder --cache-from=hsldevcom/jore4-frontend:dev -t hsldevcom/jore4-frontend:dev ./frontend
+
+      - name: Extract branch name # https://github.community/t/run-step-on-if-branch-tag-is/16965/5
+        run: echo "BRANCH_NAME=$(echo ${GITHUB_REF##*/})" >> $GITHUB_ENV
+
+      - name: tag frontend's docker image as 'latest'
+        run: docker tag hsldevcom/jore4-frontend:dev hsldevcom/jore4-frontend:latest
+
+      - name: tag frontend's docker image as '<branch_name>-<git_commit_sha>'
+        run: docker tag hsldevcom/jore4-frontend:dev hsldevcom/jore4-frontend:${{steps.extract_branch.outputs.branch}}-$GITHUB_SHA
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.JORE4_DOCKERHUB_USER }}
+          password: ${{ secrets.JORE4_DOCKERHUB_TOKEN }}
+
+      - name: Push to Docker Hub
+        run: docker push hsldevcom/jore4-frontend --all-tags
