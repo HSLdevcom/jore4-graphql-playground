@@ -13,6 +13,7 @@
     "@types/react-dom": "^16.9.8",
     "babel-plugin-relay": "^10.1.3",
     "graphql": "^15.5.0",
+    "http-proxy-middleware": "^1.0.6",
     "leaflet": "^1.7.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -25,7 +26,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "yarn prebuild && react-scripts start",
+    "start": "yarn prebuild && REACT_APP_BACKEND_HOST=localhost:8080 react-scripts start",
     "prebuild": "yarn relay",
     "build": "yarn prebuild && react-scripts build",
     "test": "yarn prebuild && react-scripts test",
