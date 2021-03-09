@@ -8,16 +8,17 @@ import {
   Variables,
 } from "relay-runtime";
 import { SubscriptionClient } from "subscriptions-transport-ws";
+import { getWsUri } from "./utils";
 
 const subscriptionClient = new SubscriptionClient(
-  "ws://localhost:8080/v1beta1/relay",
+  `${getWsUri()}/v1beta1/relay`,
   {
     reconnect: true,
   }
 );
 
 function fetchQuery(operation: RequestParameters, variables: Variables) {
-  return fetch("http://localhost:8080/v1beta1/relay", {
+  return fetch("/v1beta1/relay", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
