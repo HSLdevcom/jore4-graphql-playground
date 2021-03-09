@@ -25,14 +25,14 @@ jobs:
       - name: build frontend's docker image for distribution
         run: docker build --cache-from=hsldevcom/jore4-frontend:builder --cache-from=hsldevcom/jore4-frontend:dev -t hsldevcom/jore4-frontend:dev ./frontend
 
-      - name: Extract branch name # https://github.community/t/run-step-on-if-branch-tag-is/16965/5
+      - name: Extract branch name to env variable # https://github.community/t/run-step-on-if-branch-tag-is/16965/5
         run: echo "BRANCH_NAME=$(echo ${GITHUB_REF##*/})" >> $GITHUB_ENV
 
       - name: tag frontend's docker image as 'latest'
         run: docker tag hsldevcom/jore4-frontend:dev hsldevcom/jore4-frontend:latest
 
       - name: tag frontend's docker image as '<branch_name>-<git_commit_sha>'
-        run: docker tag hsldevcom/jore4-frontend:dev hsldevcom/jore4-frontend:${{steps.extract_branch.outputs.branch}}-$GITHUB_SHA
+        run: docker tag hsldevcom/jore4-frontend:dev hsldevcom/jore4-frontend:$BRANCH_NAME-$GITHUB_SHA
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
