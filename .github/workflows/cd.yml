@@ -24,7 +24,7 @@ jobs:
         run: docker pull $FRONTEND_IMAGE:builder
 
       - name: build dependencies & source code into builder image to support caching
-        run: docker build --cache-from=$FRONTEND_IMAGE:builder --target build -t $FRONTEND_IMAGE:builder ./frontend
+        run: docker build --cache-from=$FRONTEND_IMAGE:builder --target build -t $FRONTEND_IMAGE:builder --build-arg REACT_APP_GIT_HASH=$GITHUB_SHA ./frontend
 
       - name: build frontend's docker image for distribution
         run: docker build --cache-from=$FRONTEND_IMAGE:builder --cache-from=$FRONTEND_IMAGE:dev -t $FRONTEND_IMAGE:dev ./frontend

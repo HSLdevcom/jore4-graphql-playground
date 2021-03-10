@@ -17,6 +17,7 @@ const App: React.FC = () => (
       <Map />
       <footer>
         <p>Click on the map to insert a new point into the database.</p>
+        <p>Version: {process.env.REACT_APP_GIT_HASH}</p>
       </footer>
     </div>
   </RelayEnvironmentProvider>
