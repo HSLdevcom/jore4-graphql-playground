@@ -6,6 +6,7 @@ RUN yarn install --frozen-lockfile
 COPY --chown=node:node ./src ./src
 COPY --chown=node:node ./public ./public
 COPY --chown=node:node tsconfig.json relay.config.js schema.graphql .prettierignore ./
+ARG REACT_APP_GIT_HASH=unknown
 RUN yarn build
 
 FROM nginx:1.19.6-alpine

@@ -8,7 +8,7 @@ import {
   Variables,
 } from "relay-runtime";
 import { SubscriptionClient } from "subscriptions-transport-ws";
-import { getWsUri } from "./utils";
+import { getWsUri } from "./config";
 
 const subscriptionClient = new SubscriptionClient(
   `${getWsUri()}/v1beta1/relay`,
