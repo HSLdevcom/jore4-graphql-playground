@@ -10,7 +10,7 @@ Currently its only function is to demonstrate how GraphQL may ease frontend deve
 docker-compose up --build
 ```
 
-Open http://localhost/ in two different browsers and wait for the backend to initialize itself.
+Open http://localhost:1234 in two different browsers and wait for the backend to initialize itself.
 Then click away on the map and the created markers.
 
 ## So what?
@@ -48,7 +48,7 @@ To contribute, in 10 minutes:
 1. Run `hasura migrate ...` to read or write DB migration files.
 1. Run `hasura metadata ...` to read or write Hasura configuration.
 
-To iterate on the frontend faster, comment out the lines for the service `frontend` in `docker-compose.yml` and use `yarn start` outside of Docker in the directory `frontend`.
+To iterate on the frontend faster, run `docker compose up -d hasura` in project root and `yarn start` in `frontend` directory.
 
 ### Frontend development
 
