@@ -30,6 +30,7 @@
     "prebuild": "yarn relay",
     "build": "yarn prebuild && react-scripts build",
     "test": "yarn prebuild && react-scripts test",
+    "test:ci": "yarn test --ci",
     "lint": "eslint --max-warnings=0",
     "lint:all": "yarn lint './src/**/*.{ts,tsx}'",
     "eject": "react-scripts eject",
