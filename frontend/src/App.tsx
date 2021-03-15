@@ -1,5 +1,5 @@
 import React from "react";
-import { RelayEnvironmentProvider } from "relay-hooks";
+import { RelayEnvironmentProvider } from "react-relay";
 import Map from "./components/Map";
 import { relayEnvironment } from "./relay-environment";
 
