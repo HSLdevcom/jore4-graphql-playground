@@ -1,6 +1,6 @@
 import graphql from "babel-plugin-relay/macro"; // https://create-react-app.dev/docs/adding-relay/
 import React, { useMemo, useState } from "react";
-import { useRelayEnvironment, useSubscription } from "relay-hooks";
+import { useRelayEnvironment, useSubscription } from "react-relay";
 import { GeoJson } from "../types";
 import { DraggableMarker } from "./DraggableMarker";
 import { deletePoint } from "./mutations/DeletePoint";
