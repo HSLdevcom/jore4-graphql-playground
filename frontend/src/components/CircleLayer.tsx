@@ -1,10 +1,10 @@
 import React from "react";
 import { useRelayEnvironment } from "react-relay";
+import { deletePoint } from "../api/mutations/DeletePoint";
+import { updatePoint } from "../api/mutations/UpdatePoint";
+import { usePlaygroundPointsSubscription } from "../api/subscriptions/PlaygroundPointsSubscription";
 import { GeoJson } from "../types";
 import { DraggableMarker } from "./DraggableMarker";
-import { deletePoint } from "./mutations/DeletePoint";
-import { updatePoint } from "./mutations/UpdatePoint";
-import { usePlaygroundPointsSubscription } from "./subscriptions/PlaygroundPointsSubscription";
 
 const CircleLayer: React.FC = () => {
   // FIXME: Subscribe only to the intersection of viewport and points
