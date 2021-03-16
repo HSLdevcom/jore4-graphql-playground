@@ -1,7 +1,7 @@
 import React from "react";
 import { useMapEvent } from "react-leaflet";
+import { insertPoint } from "../api/mutations/InsertPoint";
 import { relayEnvironment } from "../relay-environment";
-import { insertPoint } from "./mutations/InsertPoint";
 
 const EditLayer: React.FC = () => {
   useMapEvent("click", (event) => {
