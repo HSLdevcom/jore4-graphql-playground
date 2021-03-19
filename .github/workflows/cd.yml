@@ -31,7 +31,7 @@ jobs:
         run: docker build --cache-from=$FRONTEND_IMAGE:builder --target build -t $FRONTEND_IMAGE:builder --build-arg REACT_APP_GIT_HASH=$GITHUB_SHA ./frontend
 
       - name: build frontend's docker image for distribution
-        run: docker build --cache-from=$FRONTEND_IMAGE:builder --cache-from=$FRONTEND_IMAGE:dev -t $FRONTEND_IMAGE:dev ./frontend
+        run: docker build --cache-from=$FRONTEND_IMAGE:builder --cache-from=$FRONTEND_IMAGE:dev -t $FRONTEND_IMAGE:dev --build-arg REACT_APP_GIT_HASH=$GITHUB_SHA ./frontend
 
       - name: tag frontend's docker image as 'latest'
         if: ${{ github.ref == 'refs/heads/main' }}
