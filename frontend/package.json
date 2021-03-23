@@ -58,7 +58,7 @@
   },
   "devDependencies": {
     "@types/leaflet": "^1.5.21",
-    "@types/react-relay": "^7.0.17",
+    "@types/react-relay": "^11.0.0",
     "@types/relay-runtime": "^10.1.8",
     "graphqurl": "^0.3.3",
     "prettier": "^2.2.1",
