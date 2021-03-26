@@ -1,6 +1,7 @@
 import graphql from "babel-plugin-relay/macro"; // https://create-react-app.dev/docs/adding-relay/
 import { useMemo, useState } from "react";
 import { useSubscription } from "react-relay";
+import { PlaygroundPointsSubscriptionResponse } from "./__generated__/PlaygroundPointsSubscription.graphql";
 
 const subscription = graphql`
   subscription PlaygroundPointsSubscription {
@@ -23,14 +24,16 @@ const subscription = graphql`
 const variables = {};
 
 export const usePlaygroundPointsSubscription = () => {
-  const [data, setData] = useState([]);
+  // FIXME: avoid any type
+  const [data, setData] = useState<any>([]);
   const config = useMemo(
     () => ({
       variables,
       subscription,
-      onNext: (data: any) => {
-        const playground_points = data.playground_points_connection.edges.map(
-          (item: any) => item.node
+      onNext: (data: unknown) => {
+        // FIXME: how to avoid type casting?
+        const playground_points = (data as PlaygroundPointsSubscriptionResponse).playground_points_connection.edges.map(
+          (item) => item.node
         );
         setData(playground_points);
       },
