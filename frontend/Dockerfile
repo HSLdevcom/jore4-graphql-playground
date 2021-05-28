@@ -1,4 +1,4 @@
-FROM node:15.8.0-alpine3.12 AS build
+FROM node:16.2.0-alpine3.12 AS build
 RUN apk --no-cache add curl
 WORKDIR /app
 COPY --chown=node:node package.json yarn.lock ./
