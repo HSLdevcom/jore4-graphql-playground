@@ -4,15 +4,31 @@ schema {
   subscription: subscription_root
 }
 
+"""An object with globally unique ID"""
+interface Node {
+  """A globally unique identifier"""
+  id: ID!
+}
+
+type PageInfo {
+  endCursor: String!
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String!
+}
+
 scalar geography
 
-# Expression to compare the result of casting a column of type geography. Multiple
-# cast targets are combined with logical 'AND'.
+"""
+Expression to compare the result of casting a column of type geography. Multiple cast targets are combined with logical 'AND'.
+"""
 input geography_cast_exp {
   geometry: geometry_comparison_exp
 }
 
-# expression to compare columns of type geography. All fields are combined with logical 'AND'.
+"""
+expression to compare columns of type geography. All fields are combined with logical 'AND'.
+"""
 input geography_comparison_exp {
   _cast: geography_cast_exp
   _eq: geography
@@ -25,22 +41,25 @@ input geography_comparison_exp {
   _neq: geography
   _nin: [geography!]
 
-  # is the column within a distance from a geography value
+  """is the column within a distance from a geography value"""
   _st_d_within: st_d_within_geography_input
 
-  # does the column spatially intersect the given geography value
+  """does the column spatially intersect the given geography value"""
   _st_intersects: geography
 }
 
 scalar geometry
 
-# Expression to compare the result of casting a column of type geometry. Multiple
-# cast targets are combined with logical 'AND'.
+"""
+Expression to compare the result of casting a column of type geometry. Multiple cast targets are combined with logical 'AND'.
+"""
 input geometry_cast_exp {
   geography: geography_comparison_exp
 }
 
-# expression to compare columns of type geometry. All fields are combined with logical 'AND'.
+"""
+expression to compare columns of type geometry. All fields are combined with logical 'AND'.
+"""
 input geometry_comparison_exp {
   _cast: geometry_cast_exp
   _eq: geometry
@@ -53,250 +72,137 @@ input geometry_comparison_exp {
   _neq: geometry
   _nin: [geometry!]
 
-  # does the column contain the given geometry value
+  """does the column contain the given geometry value"""
   _st_contains: geometry
 
-  # does the column crosses the given geometry value
+  """does the column crosses the given geometry value"""
   _st_crosses: geometry
 
-  # is the column within a distance from a geometry value
+  """is the column within a distance from a geometry value"""
   _st_d_within: st_d_within_input
 
-  # is the column equal to given geometry value. Directionality is ignored
+  """is the column equal to given geometry value. Directionality is ignored"""
   _st_equals: geometry
 
-  # does the column spatially intersect the given geometry value
+  """does the column spatially intersect the given geometry value"""
   _st_intersects: geometry
 
-  # does the column 'spatially overlap' (intersect but not completely contain) the given geometry value
+  """
+  does the column 'spatially overlap' (intersect but not completely contain) the given geometry value
+  """
   _st_overlaps: geometry
 
-  # does the column have atleast one point in common with the given geometry value
+  """
+  does the column have atleast one point in common with the given geometry value
+  """
   _st_touches: geometry
 
-  # is the column contained in the given geometry value
+  """is the column contained in the given geometry value"""
   _st_within: geometry
 }
 
-# mutation root
+"""mutation root"""
 type mutation_root {
-  # delete data from the table: "playground.points"
+  """
+  delete data from the table: "playground.points"
+  """
   delete_playground_points(
-    # filter the rows which have to be deleted
+    """filter the rows which have to be deleted"""
     where: playground_points_bool_exp!
   ): playground_points_mutation_response
 
-  # delete single row from the table: "playground.points"
+  """
+  delete single row from the table: "playground.points"
+  """
   delete_playground_points_by_pk(
-    # The ID of the point
+    """The ID of the point"""
     point_id: uuid!
   ): playground_points
 
-  # insert data into the table: "playground.points"
+  """
+  insert data into the table: "playground.points"
+  """
   insert_playground_points(
-    # the rows to be inserted
+    """the rows to be inserted"""
     objects: [playground_points_insert_input!]!
 
-    # on conflict condition
+    """on conflict condition"""
     on_conflict: playground_points_on_conflict
   ): playground_points_mutation_response
 
-  # insert a single row into the table: "playground.points"
+  """
+  insert a single row into the table: "playground.points"
+  """
   insert_playground_points_one(
-    # the row to be inserted
+    """the row to be inserted"""
     object: playground_points_insert_input!
 
-    # on conflict condition
+    """on conflict condition"""
     on_conflict: playground_points_on_conflict
   ): playground_points
 
-  # update data of the table: "playground.points"
+  """
+  update data of the table: "playground.points"
+  """
   update_playground_points(
-    # sets the columns of the filtered rows to the given values
+    """sets the columns of the filtered rows to the given values"""
     _set: playground_points_set_input
 
-    # filter the rows which have to be updated
+    """filter the rows which have to be updated"""
     where: playground_points_bool_exp!
   ): playground_points_mutation_response
 
-  # update single row of the table: "playground.points"
+  """
+  update single row of the table: "playground.points"
+  """
   update_playground_points_by_pk(
-    # sets the columns of the filtered rows to the given values
+    """sets the columns of the filtered rows to the given values"""
     _set: playground_points_set_input
     pk_columns: playground_points_pk_columns_input!
   ): playground_points
 }
 
-# An object with globally unique ID
-interface Node {
-  # A globally unique identifier
-  id: ID!
-}
-
-# column ordering options
+"""column ordering options"""
 enum order_by {
-  # in the ascending order, nulls last
+  """in the ascending order, nulls last"""
   asc
 
-  # in the ascending order, nulls first
+  """in the ascending order, nulls first"""
   asc_nulls_first
 
-  # in the ascending order, nulls last
+  """in the ascending order, nulls last"""
   asc_nulls_last
 
-  # in the descending order, nulls first
+  """in the descending order, nulls first"""
   desc
 
-  # in the descending order, nulls first
+  """in the descending order, nulls first"""
   desc_nulls_first
 
-  # in the descending order, nulls last
+  """in the descending order, nulls last"""
   desc_nulls_last
 }
 
-type PageInfo {
-  endCursor: String!
-  hasNextPage: Boolean!
-  hasPreviousPage: Boolean!
-  startCursor: String!
-}
+"""
+Geographic points for fun
 
-# Geographic points for fun
-#
-#
-# columns and relationships of "playground.points"
-#
+
+columns and relationships of "playground.points"
+
+"""
 type playground_points implements Node {
   id: ID!
 
-  # The geography of the point
+  """The geography of the point"""
   point_geog: geography!
 
-  # The ID of the point
+  """The ID of the point"""
   point_id: uuid!
 }
 
-# aggregated selection of "playground.points"
-type playground_points_aggregate {
-  aggregate: playground_points_aggregate_fields
-  nodes: [playground_points!]!
-}
-
-# aggregate fields of "playground.points"
-type playground_points_aggregate_fields {
-  count(columns: [playground_points_select_column!], distinct: Boolean): Int
-  max: playground_points_max_fields
-  min: playground_points_min_fields
-}
-
-# order by aggregate values of table "playground.points"
-input playground_points_aggregate_order_by {
-  count: order_by
-  max: playground_points_max_order_by
-  min: playground_points_min_order_by
-}
-
-# input type for inserting array relation for remote table "playground.points"
-input playground_points_arr_rel_insert_input {
-  data: [playground_points_insert_input!]!
-  on_conflict: playground_points_on_conflict
-}
-
-# Boolean expression to filter rows from the table "playground.points". All fields are combined with a logical 'AND'.
-input playground_points_bool_exp {
-  _and: [playground_points_bool_exp]
-  _not: playground_points_bool_exp
-  _or: [playground_points_bool_exp]
-  point_geog: geography_comparison_exp
-  point_id: uuid_comparison_exp
-}
-
-# unique or primary key constraints on table "playground.points"
-enum playground_points_constraint {
-  # unique or primary key constraint
-  points_pkey
-}
-
-# input type for inserting data into table "playground.points"
-input playground_points_insert_input {
-  point_geog: geography
-}
-
-# aggregate max on columns
-type playground_points_max_fields {
-  point_id: uuid
-}
-
-# order by max() on columns of table "playground.points"
-input playground_points_max_order_by {
-  point_id: order_by
-}
-
-# aggregate min on columns
-type playground_points_min_fields {
-  point_id: uuid
-}
-
-# order by min() on columns of table "playground.points"
-input playground_points_min_order_by {
-  point_id: order_by
-}
-
-# response of any mutation on the table "playground.points"
-type playground_points_mutation_response {
-  # number of affected rows by the mutation
-  affected_rows: Int!
-
-  # data of the affected rows by the mutation
-  returning: [playground_points!]!
-}
-
-# input type for inserting object relation for remote table "playground.points"
-input playground_points_obj_rel_insert_input {
-  data: playground_points_insert_input!
-  on_conflict: playground_points_on_conflict
-}
-
-# on conflict condition type for table "playground.points"
-input playground_points_on_conflict {
-  constraint: playground_points_constraint!
-  update_columns: [playground_points_update_column!]!
-  where: playground_points_bool_exp
-}
-
-# ordering options when selecting data from "playground.points"
-input playground_points_order_by {
-  point_geog: order_by
-  point_id: order_by
-}
-
-# primary key columns input for table: "playground.points"
-input playground_points_pk_columns_input {
-  # The ID of the point
-  point_id: uuid!
-}
-
-# select columns of table "playground.points"
-enum playground_points_select_column {
-  # column name
-  point_geog
-
-  # column name
-  point_id
-}
-
-# input type for updating data in table "playground.points"
-input playground_points_set_input {
-  point_geog: geography
-}
-
-# update columns of table "playground.points"
-enum playground_points_update_column {
-  # column name
-  point_geog
-}
-
-# A Relay Connection object on "playground.points"
+"""
+A Relay Connection object on "playground.points"
+"""
 type playground_pointsConnection {
   edges: [playground_pointsEdge!]!
   pageInfo: PageInfo!
@@ -307,27 +213,183 @@ type playground_pointsEdge {
   node: playground_points!
 }
 
-# query root
+"""
+aggregated selection of "playground.points"
+"""
+type playground_points_aggregate {
+  aggregate: playground_points_aggregate_fields
+  nodes: [playground_points!]!
+}
+
+"""
+aggregate fields of "playground.points"
+"""
+type playground_points_aggregate_fields {
+  count(columns: [playground_points_select_column!], distinct: Boolean): Int
+  max: playground_points_max_fields
+  min: playground_points_min_fields
+}
+
+"""
+order by aggregate values of table "playground.points"
+"""
+input playground_points_aggregate_order_by {
+  count: order_by
+  max: playground_points_max_order_by
+  min: playground_points_min_order_by
+}
+
+"""
+input type for inserting array relation for remote table "playground.points"
+"""
+input playground_points_arr_rel_insert_input {
+  data: [playground_points_insert_input!]!
+  on_conflict: playground_points_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "playground.points". All fields are combined with a logical 'AND'.
+"""
+input playground_points_bool_exp {
+  _and: [playground_points_bool_exp]
+  _not: playground_points_bool_exp
+  _or: [playground_points_bool_exp]
+  point_geog: geography_comparison_exp
+  point_id: uuid_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "playground.points"
+"""
+enum playground_points_constraint {
+  """unique or primary key constraint"""
+  points_pkey
+}
+
+"""
+input type for inserting data into table "playground.points"
+"""
+input playground_points_insert_input {
+  point_geog: geography
+}
+
+"""aggregate max on columns"""
+type playground_points_max_fields {
+  point_id: uuid
+}
+
+"""
+order by max() on columns of table "playground.points"
+"""
+input playground_points_max_order_by {
+  point_id: order_by
+}
+
+"""aggregate min on columns"""
+type playground_points_min_fields {
+  point_id: uuid
+}
+
+"""
+order by min() on columns of table "playground.points"
+"""
+input playground_points_min_order_by {
+  point_id: order_by
+}
+
+"""
+response of any mutation on the table "playground.points"
+"""
+type playground_points_mutation_response {
+  """number of affected rows by the mutation"""
+  affected_rows: Int!
+
+  """data of the affected rows by the mutation"""
+  returning: [playground_points!]!
+}
+
+"""
+input type for inserting object relation for remote table "playground.points"
+"""
+input playground_points_obj_rel_insert_input {
+  data: playground_points_insert_input!
+  on_conflict: playground_points_on_conflict
+}
+
+"""
+on conflict condition type for table "playground.points"
+"""
+input playground_points_on_conflict {
+  constraint: playground_points_constraint!
+  update_columns: [playground_points_update_column!]!
+  where: playground_points_bool_exp
+}
+
+"""
+ordering options when selecting data from "playground.points"
+"""
+input playground_points_order_by {
+  point_geog: order_by
+  point_id: order_by
+}
+
+"""
+primary key columns input for table: "playground.points"
+"""
+input playground_points_pk_columns_input {
+  """The ID of the point"""
+  point_id: uuid!
+}
+
+"""
+select columns of table "playground.points"
+"""
+enum playground_points_select_column {
+  """column name"""
+  point_geog
+
+  """column name"""
+  point_id
+}
+
+"""
+input type for updating data in table "playground.points"
+"""
+input playground_points_set_input {
+  point_geog: geography
+}
+
+"""
+update columns of table "playground.points"
+"""
+enum playground_points_update_column {
+  """column name"""
+  point_geog
+}
+
+"""query root"""
 type query_root {
   node(
-    # A globally unique id
+    """A globally unique id"""
     id: ID!
   ): Node
 
-  # fetch data from the table: "playground.points"
+  """
+  fetch data from the table: "playground.points"
+  """
   playground_points_connection(
     after: String
     before: String
 
-    # distinct select on columns
+    """distinct select on columns"""
     distinct_on: [playground_points_select_column!]
     first: Int
     last: Int
 
-    # sort the rows by one or more columns
+    """sort the rows by one or more columns"""
     order_by: [playground_points_order_by!]
 
-    # filter the rows returned
+    """filter the rows returned"""
     where: playground_points_bool_exp
   ): playground_pointsConnection!
 }
@@ -343,34 +405,38 @@ input st_d_within_input {
   from: geometry!
 }
 
-# subscription root
+"""subscription root"""
 type subscription_root {
   node(
-    # A globally unique id
+    """A globally unique id"""
     id: ID!
   ): Node
 
-  # fetch data from the table: "playground.points"
+  """
+  fetch data from the table: "playground.points"
+  """
   playground_points_connection(
     after: String
     before: String
 
-    # distinct select on columns
+    """distinct select on columns"""
     distinct_on: [playground_points_select_column!]
     first: Int
     last: Int
 
-    # sort the rows by one or more columns
+    """sort the rows by one or more columns"""
     order_by: [playground_points_order_by!]
 
-    # filter the rows returned
+    """filter the rows returned"""
     where: playground_points_bool_exp
   ): playground_pointsConnection!
 }
 
 scalar uuid
 
-# expression to compare columns of type uuid. All fields are combined with logical 'AND'.
+"""
+expression to compare columns of type uuid. All fields are combined with logical 'AND'.
+"""
 input uuid_comparison_exp {
   _eq: uuid
   _gt: uuid
