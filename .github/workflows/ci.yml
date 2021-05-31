@@ -31,7 +31,12 @@ jobs:
 
       - name: Check that we have latest version of Hasura's schema
         working-directory: ./frontend
-        run: cmp schema.graphql latest-schema.graphql
+        run: |
+          echo "Print schema.graphql"
+          cat schema.graphql
+          echo "Print latest-schema.graphql"
+          cat latest-schema.graphql
+          cmp schema.graphql latest-schema.graphql
 
   frontend-qa:
     name: Run QA related things for frontend
