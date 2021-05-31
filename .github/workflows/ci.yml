@@ -24,7 +24,10 @@ jobs:
 
       - name: Fetch latest graphql schema
         working-directory: ./frontend
-        run: npx graphqurl "http://localhost:8080/v1beta1/relay" --introspect > latest-schema.graphql
+        # npx from npm v7 interactively asks whether to install graphqurl.
+        # `npm_config_yes=true npx ...` is the backwards-compatible way to say
+        # `npx --yes`. At the time of writing, npm v6 is used in GitHub Actions.
+        run: npm_config_yes=true npx graphqurl "http://localhost:8080/v1beta1/relay" --introspect > latest-schema.graphql
 
       - name: Check that we have latest version of Hasura's schema
         working-directory: ./frontend
