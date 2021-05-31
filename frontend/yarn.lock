@@ -6224,31 +6224,26 @@ graphql@^15.5.0:
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.5.0.tgz#39d19494dbe69d1ea719915b578bf920344a69d5"
   integrity sha512-OmaM7y0kaK31NKG31q4YbD2beNYa6jBBKtMFT6gLYJljHLJr42IqJ8KX08u3Li/0ifzTU5HjmoOOrwa5BRLeDA==
 
-graphqurl@^0.3.3:
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/graphqurl/-/graphqurl-0.3.3.tgz#3fb8504b1230ec0142e7ac8357625411997ea08b"
-  integrity sha512-MrWZhLsxUmPAZrZ1owl3GffhjdfEOW11inO2qpDfrHbVd4d6AOpKnIQm3Z3I1hQ1cezZIB6q0C4h22lrY/mk3g==
+graphqurl@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/graphqurl/-/graphqurl-1.0.1.tgz#5676f6a81b0eea2eefe3276ecbc9af46b3c0beb1"
+  integrity sha512-97Chda90OBIHCpH6iQHNYc9qTTADN0LOFbiMcRws3V5SottC/0yTDIQDgBzncZYVCkttyjAnT6YmVuNId7ymQA==
   dependencies:
-    "@oclif/command" "^1.4.35"
-    "@oclif/config" "^1.6.33"
-    "@oclif/errors" "^1.1.2"
-    "@oclif/plugin-help" "^2.0.5"
-    apollo-cache-inmemory "^1.2.6"
-    apollo-client "^2.3.7"
-    apollo-link "^1.2.2"
-    apollo-link-http "^1.5.4"
-    apollo-link-ws "^1.0.8"
+    "@oclif/command" "1.8.0"
+    "@oclif/config" "1.17.0"
+    "@oclif/errors" "1.3.4"
+    "@oclif/plugin-help" "3.2.1"
     cli-ux "^4.7.3"
-    express "^4.16.3"
-    graphql "0.9.1"
-    graphql-language-service-interface "^1.2.2"
-    graphql-language-service-utils "^1.2.2"
-    graphql-tag "^2.9.2"
-    node-fetch "^2.2.0"
-    opn "^5.3.0"
-    subscriptions-transport-ws "^0.9.13"
-    terminal-kit "^1.19.2"
-    ws "^6.0.0"
+    express "4.16.3"
+    graphql "15.4.0"
+    graphql-language-service-interface "^2.8.2"
+    graphql-language-service-utils "2.5.1"
+    isomorphic-fetch "3.0.0"
+    isomorphic-ws "4.0.1"
+    open "7.3.1"
+    subscriptions-transport-ws "0.9.18"
+    terminal-kit "^1.45.4"
+    ws "7.4.2"
 
 growly@^1.3.0:
   version "1.3.0"
