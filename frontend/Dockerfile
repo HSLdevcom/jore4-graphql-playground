@@ -9,7 +9,7 @@ COPY --chown=node:node tsconfig.json relay.config.js schema.graphql .prettierign
 ARG REACT_APP_GIT_HASH=unknown
 RUN yarn build
 
-FROM nginx:1.19.6-alpine
+FROM nginx:1.21.6-alpine
 EXPOSE 80
 COPY --from=build /app/build /usr/share/nginx/html
 CMD ["nginx", "-g", "daemon off;"]
